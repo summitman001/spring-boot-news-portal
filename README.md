@@ -1,4 +1,4 @@
-\# 📰 Gazze Haber Sistemi - Etkileşimli Haber Portalı
+\ 📰 Gazze Haber Sistemi - Etkileşimli Haber Portalı
 
 
 
@@ -6,11 +6,11 @@ Bu proje, modern yazılım mimarileri (MVC) ve ileri seviye veritabanı programl
 
 
 
-\## 🚀 Proje Özellikleri
+\ 🚀 Proje Özellikleri
 
 
 
-\- \*\*Kullanıcı Etkileşimi:\*\* Haberlere yorum yapabilme, favorilere ekleme, beğeni (kalp) ve çeşitli duygu emojileri (🔥 Alev, 👏 Alkış vb.) ile tepki verebilme.
+\- \\Kullanıcı Etkileşimi:\\ Haberlere yorum yapabilme, favorilere ekleme, beğeni (kalp) ve çeşitli duygu emojileri (🔥 Alev, 👏 Alkış vb.) ile tepki verebilme.
 
 \- \*\*Dinamik Raporlama:\*\* Yöneticiler için anlık veri üreten, özel SQL sorgularıyla desteklenmiş A4 formatında PDF/Yazdırılabilir raporlar.
 
