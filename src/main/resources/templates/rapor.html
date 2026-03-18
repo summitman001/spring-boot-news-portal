@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Haber Performans Raporu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="fas fa-chart-line text-danger"></i> Yönetici Raporu</a>
+            <a href="/" class="btn btn-outline-light btn-sm">Siteye Dön</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold text-secondary"><i class="fas fa-table me-2"></i>Haber İstatistikleri (SQL View)</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Haber Başlığı</th>
+                                <th>Kategori</th>
+                                <th>Tarih</th>
+                                <th class="text-center">Okunma</th>
+                                <th class="text-center">Yorum</th>
+                                <th class="text-center">Beğeni</th>
+                                <th class="text-center">Tepki</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="satir : ${raporListesi}">
+                                <td class="fw-bold" th:text="${satir.haberBasligi}">Başlık</td>
+                                
+                                <td><span class="badge bg-secondary" th:text="${satir.kategori}">Kat</span></td>
+                                
+                                <td th:text="${#temporals.format(satir.yayinTarihi, 'dd.MM.yyyy')}">Tarih</td>
+                                
+                                <td class="text-center"><span class="badge bg-primary rounded-pill" th:text="${satir.goruntulenmeSayisi}">0</span></td>
+                                
+                                <td class="text-center" th:text="${satir.toplamYorum}">0</td>
+                                <td class="text-center text-danger"><i class="fas fa-heart"></i> <span th:text="${satir.toplamBegeni}">0</span></td>
+                                <td class="text-center text-warning"><i class="fas fa-bolt"></i> <span th:text="${satir.toplamTepki}">0</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-info mt-3">
+            <i class="fas fa-info-circle"></i> Bu tablo, veritabanındaki <strong>haber_performans_raporu</strong> isimli <em>VIEW</em> (Görünüm) üzerinden çekilmektedir.
+        </div>
+    </div>
+
+</body>
+</html>

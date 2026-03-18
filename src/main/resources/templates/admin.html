@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+    <title>Yönetim Paneli - Gazze Haber</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+            <style>
+                body {
+                    background-color: #f0f2f5;
+                }
+                .sidebar {
+                    height: 100vh;
+                    background: #1a1a1a;
+                    color: white;
+                    padding-top: 20px;
+                    position: fixed;
+                    width: 250px;
+                }
+                .content {
+                    margin-left: 250px;
+                    padding: 20px;
+                }
+                .sidebar a {
+                    color: #ccc;
+                    text-decoration: none;
+                    display: block;
+                    padding: 15px 20px;
+                    font-size: 1.1rem;
+                }
+                .sidebar a:hover {
+                    background: #e74c3c;
+                    color: white;
+                }
+                .card {
+                    border: none;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                }
+            </style>
+            </head>
+            <body>
+
+            <div class="sidebar">
+                <h3 class="text-center mb-4 text-danger fw-bold">PANEL</h3>
+                <a href="/admin"><i class="fas fa-tachometer-alt me-2"></i> Yönetim Paneli</a>
+                <a href="/" target="_blank"><i class="fas fa-globe me-2"></i> Siteye Git</a>
+
+                <a href="/logout" class="mt-5 text-danger fw-bold" style="border-top: 1px solid #333;">
+                    <i class="fas fa-sign-out-alt me-2"></i> Çıkış Yap
+                </a>
+            </div>
+
+            <div class="content">
+                <div class="container-fluid">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>Haber Yönetimi</h2>
+                        <a href="/admin/botu-calistir" class="btn btn-success btn-lg shadow">
+                            <i class="fas fa-robot"></i> Botu Çalıştır ve Veri Çek
+                        </a>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="card bg-primary text-white p-3">
+                                <h3><i class="fas fa-newspaper"></i> Toplam Haber</h3>
+                                <h1 th:text="${haberler.size()}">0</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <hr class="my-5 border-danger"> <h2 class="mb-4">Yorum Yönetimi</h2>
+
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-secondary">
+                                        <tr>
+                                            <th>Yazar</th>
+                                            <th>Yorum</th>
+                                            <th>Hangi Haber?</th>
+                                            <th>Tarih</th>
+                                            <th>İşlem</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:if="${yorumlar.empty}">
+                                            <td colspan="5" class="text-center text-muted">Henüz hiç yorum yapılmamış.</td>
+                                        </tr>
+
+                                        <tr th:each="yorum : ${yorumlar}">
+                                            <td class="fw-bold" th:text="${yorum.adSoyad}">Ahmet</td>
+
+                                            <td th:text="${yorum.icerik}" style="max-width: 300px; font-style: italic;">Yorum içeriği...</td>
+
+                                            <td>
+                                                <a th:href="@{/haber/{id}(id=${yorum.haber.id})}" target="_blank" class="text-decoration-none text-dark">
+                                                    <i class="fas fa-external-link-alt small me-1"></i>
+                                                    <span th:text="${yorum.haber.baslik}">Haber Başlığı</span>
+                                                </a>
+                                            </td>
+
+                                            <td th:text="${#temporals.format(yorum.tarih, 'dd.MM HH:mm')}">Tarih</td>
+
+                                            <td>
+                                                <a th:href="@{/admin/yorum-sil/{id}(id=${yorum.id})}" 
+                                                   onclick="return confirm('Bu yorumu silmek istediğine emin misin?');" 
+                                                   class="btn btn-sm btn-danger text-white">
+                                                    <i class="fas fa-trash-alt"></i> Sil
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div style="height: 100px;"></div>
+                        <div class="card-body">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Görsel</th>
+                                        <th>Başlık</th>
+                                        <th>Kategori</th>
+                                        <th>Yorumlar</th>
+                                        <th>Tarih</th>
+                                        <th>İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="haber : ${haberler}">
+                                        <td th:text="${haber.id}">1</td>
+                                        <td>
+                                <img th:if="${haber.gorselUrl != null}" th:src="${haber.gorselUrl}" width="60" height="40" style="object-fit: cover; border-radius: 4px;">
+                                    <i th:unless="${haber.gorselUrl != null}" class="fas fa-image text-muted"></i>
+                                    </td>
+                                    <td th:text="${haber.baslik}" style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Başlık</td>
+                                    <td>
+                                        <span class="badge bg-secondary" th:if="${haber.kategori != null}" th:text="${haber.kategori.ad}">Genel</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info text-dark" th:text="${haber.yorumlar.size()}">0</span>
+                                    </td>
+                                    <td th:text="${#temporals.format(haber.yayinTarihi, 'dd.MM HH:mm')}">Tarih</td>
+                                    <td>
+                                        <a th:href="@{/haber/{id}(id=${haber.id})}" target="_blank" class="btn btn-sm btn-outline-primary" title="Görüntüle"><i class="fas fa-eye"></i></a>
+
+                                        <a th:href="@{/admin/sil/{id}(id=${haber.id})}" 
+                                           onclick="return confirm('Bu haberi ve altındaki yorumları silmek istediğine emin misin?');" 
+                                           class="btn btn-sm btn-outline-danger" title="Sil">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                    </tr>
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            </body>
+            </html>
